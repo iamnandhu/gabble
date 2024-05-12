@@ -1,10 +1,17 @@
 import EmojiPicker from "emoji-picker-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "./chat.css"
 
 const Chat = () => {
   const [open, setOpen] = useState(false)
   const [text, setText] = useState("")
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (endRef.current) {
+      endRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []); 
 
   const handleEmoji = e => {
     setText(prev => prev + e.emoji)
@@ -126,6 +133,7 @@ const Chat = () => {
           </div>
         </div>
 
+        <div ref={endRef}></div>
       </div>
 
       <div className="bottom mt-auto p-5 flex items-center justify-between gap-5 border-t-[1px] border-[#dddddd35]">
