@@ -44,11 +44,15 @@ const Login = () => {
             <h2>Create an account</h2>
 
             <form action="" className="w-[70%] flex flex-col items-center justify-center gap-5">
-                <label htmlFor="file" className="w-full flex items-center gap-[12px] cursor-pointer">
-                    <img src={avatar.url || "./user.png"} alt="" className="bg-white rounded-[10px] w-12 h-12 object-cover opacity-60"/>
-                    
-                    <button className="bg-[#3e71e7ce] hover:bg-[#4a69b2de] px-5 py-2.5 rounded-[10px] text-[14px]">Upload Image</button>
-                </label>
+                
+                <div className="profile-image w-full flex items-center gap-[12px]">
+                    <label htmlFor="file" className="cursor-pointer">
+                        <img src={avatar.url || "./user.png"} alt="" className="bg-white rounded-[10px] w-12 h-12 object-cover opacity-60"/>
+                    </label>
+
+                    <button type="button" onClick={() => document?.getElementById('file')?.click()} className="bg-[#3e71e7ce] hover:bg-[#4a69b2de] px-5 py-2.5 
+                     rounded-[10px] text-[14px]">Upload Image</button>
+                </div>
 
                 <input type="file" id="file" className="hidden" onChange={handleAvatar}/>
 
