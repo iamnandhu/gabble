@@ -1,0 +1,32 @@
+/* .message {
+    max-width: 70%;
+    display: flex;
+    gap: 20px;
+    align-items: start;
+
+    .message-texts {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        p {
+            background-color: #5183fe;
+            padding: 20px;
+            background: rgba(27,25,40,0.4);
+            border-radius: 10px;
+        }
+    }
+
+    &.own {
+        align-self: flex-end;
+
+        .message-texts {
+            flex: 1;
+
+            p {
+                background: #5183ef;
+            }
+            
+        }
+    }
+} */
