@@ -6,7 +6,7 @@ import Notification from "./components/notification/Notification"
 
 const App = () => {
 
-  const user = false
+  const user = true
 
   return (
     <div className='container flex w-[90vw] h-[90vh] bg-[rgba(192,190,186,0.16)] rounded-[12px]'>
