@@ -1,9 +1,15 @@
 import "./login.css"
 import  {toast} from "react-toastify"
-
+import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
+import { auth } from "../../libs/firebase/firebase"
+import { signUp, userSignUpResponseModel } from "../../dto/dto"
+import { ColorRing } from 'react-loader-spinner'
+
+let userCredential: userSignUpResponseModel | undefined;
 
 const Login = () => {
+  const [spinnerVisible, setSpinnerState] = useState(false)
   const [avatar, setAvatar] = useState({
     file:null,
     url:""
@@ -11,21 +17,56 @@ const Login = () => {
 
   const handleAvatar = e => {
     if(e.target.files[0]) {
-        setAvatar({
-            file:e.target.files[0],
-            url: URL.createObjectURL(e.target.files[0])
-        })
+      setAvatar({
+          file:e.target.files[0],
+          url: URL.createObjectURL(e.target.files[0])
+      })
     }
   }
-
-  const handleLogin = e => {
+  
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     toast.dark("Hello")
   }
 
+  const useCreateUserWithEmailAndPassword = async (email: string, password: string): Promise<userSignUpResponseModel | undefined> => {
+    try {
+      setSpinnerState(true)
+      userCredential = await createUserWithEmailAndPassword(auth, email, password); 
+      setSpinnerState(false)
+    } 
+    catch (error: any) {
+      setSpinnerState(false)
+      toast.error(error.message);
+    }
+
+    return userCredential
+  };
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    let userName: string | null = formData.get('userName') as string | null;
+    let email: string | null = formData.get('email') as string | null;
+    let password: string | null = formData.get('password') as string | null;
+
+    if (!userName ||!email ||!password) {
+      console.error('Missing required field(s)');
+      return;
+    }
+
+    const signUpData: signUp = {
+      userName: userName!,
+      email: email!,
+      password: password!
+    };
+
+    useCreateUserWithEmailAndPassword(signUpData.email, signUpData.password)
+  }
 
   return (
-    <div className="login w-full h-full flex items-center gap-[100px]">
+    <div className="login w-full h-full flex items-center gap-[100px] relative">
         <div className="login-item flex-1 flex flex-col items-center gap-5">
             <h2>Welcome back</h2>
             
@@ -43,7 +84,7 @@ const Login = () => {
         <div className="signup-item flex-1 flex flex-col items-center gap-5">
             <h2>Create an account</h2>
 
-            <form action="" className="w-[70%] flex flex-col items-center justify-center gap-5">
+            <form onSubmit={handleRegister} action="" className="w-[70%] flex flex-col items-center justify-center gap-5">
                 
                 <div className="profile-image w-full flex items-center gap-[12px]">
                     <label htmlFor="file" className="cursor-pointer">
@@ -56,7 +97,7 @@ const Login = () => {
 
                 <input type="file" id="file" className="hidden" onChange={handleAvatar}/>
 
-                <input type="text" placeholder="Username" name="username" className="px-5 py-4 border-none outline-none bg-[rgba(17,25,40,0.6)] text-white rounded-[5px]"/>
+                <input type="text" placeholder="Username" name="userName" className="px-5 py-4 border-none outline-none bg-[rgba(17,25,40,0.6)] text-white rounded-[5px]"/>
 
                 <input type="text" placeholder="Email" name="email" className="px-5 py-4 border-none outline-none bg-[rgba(17,25,40,0.6)] text-white rounded-[5px]"/>
 
@@ -65,6 +106,16 @@ const Login = () => {
                 <button className="w-full px-5 py-2.5 text-[14px] border-none bg-[#1f8ef1] text-white rounded-[5px]">Sign Up</button>
             </form>
         </div>
+
+        { spinnerVisible &&<ColorRing
+          visible={true}
+          height="120"
+          width="120"
+          ariaLabel="color-ring-loading"
+          wrapperStyle={{}}
+          wrapperClass="color-ring-wrapper loader"
+          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+        />}
     </div>
   )
 }

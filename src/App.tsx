@@ -6,10 +6,10 @@ import Notification from "./components/notification/Notification"
 
 const App = () => {
 
-  const user = true
+  const user = false
 
   return (
-    <div className='container flex w-[90vw] h-[90vh] bg-[rgba(192,190,186,0.16)] rounded-[12px]'>
+    <div className='container flex w-[90vw] h-[90vh] bg-[rgba(192,190,186,0.16)] rounded-[12px] relative'>
       {
         user ? (
           <>
