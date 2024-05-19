@@ -1,5 +1,3 @@
-import React from 'react'
-
 const addUser = () => {
   return (
     <div className="addUser w-max h-max p-7 bg-[rgba(0,0,0,0.84)] rounded-[10px] absolute inset-0 m-auto">
